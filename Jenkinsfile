@@ -1,1 +1,4 @@
 
+node {
+        checkout scm
+    }
