@@ -5,10 +5,10 @@ pipeline {
 
         // Normal Stages
 
-        stage ('success'){
+        stage ('Build'){
             steps {
-                script {
-                    currentBuild.result = 'SUCCESS'
+                step {
+                   bat "run"
                 }
             }
         }
