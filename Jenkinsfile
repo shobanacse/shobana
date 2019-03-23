@@ -12,7 +12,7 @@ pipeline {
             // Run integration test
             steps {
                 script {
-                    def mvnHome = tool 'Maven'
+                    def mvnHome = tool name: 'Maven', type: 'maven'
                     if (isUnix()) {
                         // just to trigger the integration test without unit testing
                         sh "'${mvnHome}/bin/mvn'  verify -Dunit-tests.skip=true"
@@ -29,7 +29,7 @@ pipeline {
             // Run the sonar scan
             steps {
                 script {
-                    def mvnHome = tool 'Maven'
+                    def mvnHome = tool name: 'Maven', type: 'maven'
                     withSonarQubeEnv {
 
                         sh "'${mvnHome}/bin/mvn'  verify sonar:sonar -Dintegration-tests.skip=true -Dmaven.test.failure.ignore=true"
@@ -105,7 +105,7 @@ pipeline {
             steps {
                 // create the release version then create a tage with it , then push to nexus releases the released jar
                 script {
-                    def mvnHome = tool 'Maven 3.5.2' //
+                    def mvnHome = tool name: 'Maven', type: 'maven'//
                     if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
                         def v = getReleaseVersion()
                         releasedVersion = v;
@@ -170,7 +170,7 @@ pipeline {
                         timeout(time: 1, unit: 'MINUTES') {
 
                             script {
-                                def mvnHome = tool 'Maven 3.5.2'
+                                def mvnHome = tool name: 'Maven', type: 'maven'
                                 // NOTE : if you change the test class name change it here as well
                                 sh "'${mvnHome}/bin/mvn' -Dtest=ApplicationE2E surefire:test"
                             }
