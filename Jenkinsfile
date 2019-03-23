@@ -3,7 +3,7 @@ node ("windows") {
  
     git url: 'https://github.com/padmini2019/Maven'
  
-    withMaven(...) {
+    withMaven('Maven') {
  
       bat "mvn clean install"
  
