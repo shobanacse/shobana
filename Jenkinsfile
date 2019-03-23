@@ -1,4 +1,4 @@
-node ("windows") {
+node ("slave-agent") {
   stage ('Build') {
  
     git url: 'https://github.com/padmini2019/Maven'
