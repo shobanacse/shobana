@@ -8,6 +8,8 @@ node {
       // **       in the global configuration.           
       mvnHome = tool 'Maven'
    }
+   
+   stages{
    stage('Build') {
       // Run the maven build
       if (isUnix()) {
@@ -16,6 +18,18 @@ node {
          bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore clean package/)
       }
    }
+      
+       stage ('success'){
+            steps {
+                script {
+                    currentBuild.result = 'SUCCESS'
+                }
+            }
+        }
+   }
+   
+   
+   
    
        post {
         failure {
