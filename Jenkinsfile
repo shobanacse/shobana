@@ -7,7 +7,7 @@ pipeline {
 
         stage('build') {
             steps {
-                bat "start"
+                bat "run"
             }
         }
     }
