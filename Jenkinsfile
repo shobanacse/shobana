@@ -5,8 +5,10 @@ pipeline {
 
         // Normal Stages
 
-        stage ('Build'){
-            bat "run"
+        stage('build') {
+            steps {
+                bat "start"
+            }
         }
     }
 
