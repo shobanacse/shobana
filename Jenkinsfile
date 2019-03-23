@@ -15,6 +15,10 @@ pipeline {
             steps {
                 echo "Failure"
                 error "failure test. It's work"
+                step([$class: 'Mailer',
+                notifyEveryUnstableBuild: true,
+                recipients: "padmini.ramachandra@mindtree.com",
+sendToIndividuals: true])
             }
         }
 
