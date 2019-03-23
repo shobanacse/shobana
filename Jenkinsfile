@@ -29,15 +29,13 @@ pipeline {
         }
     }
     post {
-        always {
-            emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
-            echo 'I will always say Hello again!'
-
-            emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
-                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
-                subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
-
+        failure {
+            script {
+                currentBuild.result = 'Failure'
+                recipients: "padmini.ramachandra@mindtree.com",
+                sendToIndividuals: true])
         }
     }
+}
 }
 
