@@ -1,7 +1,7 @@
 node ("windows") {
   stage ('Build') {
  
-    git url: 'https://github.com/cyrille-leclerc/multi-module-maven-project'
+    git url: 'https://github.com/padmini2019/Maven'
  
     withMaven(...) {
  
