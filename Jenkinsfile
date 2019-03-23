@@ -6,11 +6,7 @@ pipeline {
         // Normal Stages
 
         stage ('Build'){
-            steps {
-                step {
-                   bat "run"
-                }
-            }
+            bat "run"
         }
     }
 
