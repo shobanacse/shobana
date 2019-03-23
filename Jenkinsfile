@@ -1,17 +1,16 @@
-pipeline {  
-     agent any  
-     stages {  
-         stage('Build') {  
-             steps {  
-                 bat "start" 
-             }  
-         }  
-     }  
+pipeline {
+    agent any
+    
+    stages {
+        stage('Ok') {
+            steps {
+                echo "Ok"
+            }
+        }
+    }
     post {
-    failure {
-        mail to: 'padmini.ramachandra@mindtree.com',
-             subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-             body: "Something is wrong with ${env.BUILD_URL}"
+        always {
+            emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
+        }
     }
 }
- }
