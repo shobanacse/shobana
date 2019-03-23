@@ -31,11 +31,16 @@ pipeline {
     post {
         failure {
             script {
-                currentBuild.result = 'Failure'
+                currentBuild.result = 'FAILURE'
+            }
+        }
+
+        always {
+            step([$class: 'Mailer',
+                notifyEveryUnstableBuild: true,
                 recipients: "padmini.ramachandra@mindtree.com",
                 sendToIndividuals: true])
         }
     }
-}
 }
 
