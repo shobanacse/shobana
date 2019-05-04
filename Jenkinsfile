@@ -1,57 +1,16 @@
-node {
-
-
-    currentBuild.result = "SUCCESS"
-
-    try {
-
-       stage('Checkout'){
-
-          checkout scm
-       }
-
-       stage('Test'){
-
-         env.NODE_ENV = "test"
-
-         print "Environment will be : ${env.NODE_ENV}"
-
-         sh 'node -v'
-         sh 'npm prune'
-         sh 'npm install'
-         sh 'npm test'
-
-       }
-
-       
-
-       stage('Cleanup'){
-
-         echo 'prune and cleanup'
-         sh 'npm prune'
-         sh 'rm node_modules -rf'
-
-         mail body: 'project build successful',
-                     from: 'xxxx@yyyyy.com',
-                     replyTo: 'xxxx@yyyy.com',
-                     subject: 'project build successful',
-                     to: 'yyyyy@yyyy.com'
-       }
-
-
-
+pipeline {
+    agent any
+    stages {
+        stage('No-op') {
+            steps {
+                sh 'ls'
+            }
+        }
+   post {
+    failure {
+        mail to: 'team@example.com',
+             subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+             body: "Something is wrong with ${env.BUILD_URL}"
     }
-    catch (err) {
-
-        currentBuild.result = "FAILURE"
-
-            mail body: "project build error is here: ${env.BUILD_URL}" ,
-            from: 'xxxx@yyyy.com',
-            replyTo: 'yyyy@yyyy.com',
-            subject: 'project build failed',
-            to: 'zzzz@yyyyy.com'
-
-        throw err
-    }
-
+}
 }
