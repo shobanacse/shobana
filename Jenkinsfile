@@ -1,16 +1,13 @@
-pipeline {
-    agent any
-    stages {
-        stage('No-op') {
-            steps {
-                sh 'ls'
-            }
+node{
+    stage('Sonarqube analysis') {
+    steps {
+    script {
+             scannerHome = tool 'SonarScanner';
         }
-   post {
-    failure {
-        mail to: 'team@example.com',
-             subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-             body: "Something is wrong with ${env.BUILD_URL}"
+     withSonarQubeEnv('SonarQube') {
+         bat "${scannerHome}/bin/sonar-scanner.bat" 
     }
-}
+
+    }
+        }
 }
