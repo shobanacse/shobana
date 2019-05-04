@@ -1,18 +1,57 @@
-pipeline {
-    agent any
-   
-    stages {
-        stage('Build'){
-            steps {
-                echo "Running job: ${env.JOB_NAME}\nbuild: ${env.BUILD_ID} - ${env.BUILD_URL}\nblue ocean: ${env.RUN_DISPLAY_URL}"
-            }
-        }
+node('node') {
+
+
+    currentBuild.result = "SUCCESS"
+
+    try {
+
+       stage('Checkout'){
+
+          checkout scm
+       }
+
+       stage('Test'){
+
+         env.NODE_ENV = "test"
+
+         print "Environment will be : ${env.NODE_ENV}"
+
+         sh 'node -v'
+         sh 'npm prune'
+         sh 'npm install'
+         sh 'npm test'
+
+       }
+
+       
+
+       stage('Cleanup'){
+
+         echo 'prune and cleanup'
+         sh 'npm prune'
+         sh 'rm node_modules -rf'
+
+         mail body: 'project build successful',
+                     from: 'xxxx@yyyyy.com',
+                     replyTo: 'xxxx@yyyy.com',
+                     subject: 'project build successful',
+                     to: 'yyyyy@yyyy.com'
+       }
+
+
+
     }
-    post {
-        failure {
-            mail to: 'vssidhya@gmail.com', from: 'jenkins@example.com',
-                subject: "Example Build: ${env.JOB_NAME} - Failed", 
-                body: "Job Failed - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\nView the log at:\n ${env.BUILD_URL}\n\nBlue Ocean:\n${env.RUN_DISPLAY_URL}"
-        }
+    catch (err) {
+
+        currentBuild.result = "FAILURE"
+
+            mail body: "project build error is here: ${env.BUILD_URL}" ,
+            from: 'xxxx@yyyy.com',
+            replyTo: 'yyyy@yyyy.com',
+            subject: 'project build failed',
+            to: 'zzzz@yyyyy.com'
+
+        throw err
     }
+
 }
